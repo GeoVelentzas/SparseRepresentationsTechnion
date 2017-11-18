@@ -4,23 +4,18 @@
 %% Parameters
 
 % TODO: Set the length of the signal
-% Write your code here... n = ????;
 n = 50;
 
 % TODO: Set the number of atoms in the dictionary
-% Write your code here... m = ????;
 m = 100;
 
 % TODO: Set the maximum number of non-zeros in the generated vector
-% Write your code here... s_max = ????;
 s_max = 15;
 
 % TODO: Set the minimal entry value
-% Write your code here... min_coeff_val = ????;
 min_coeff_val = 1;
 
 % TODO: Set the maximal entry value
-% Write your code here... max_coeff_val = ????;
 max_coeff_val = 3;
 
 % Number of realizations
@@ -28,19 +23,16 @@ num_realizations = 200;
 
 % Base seed: A non-negative integer used to reproduce the results
 % TODO: Set an arbitrary value for base seed
-% Write your code here... base_seed = ????;
 base_seed = 13;
 
 
 %% Create the dictionary
  
 % TODO: Create a random matrix A of size (n x m)
-% Write your code here... A = ????;
 rng(10); %to have the same A matrix... remove as you may wish
 A = randn(n,m);
 
 % TODO: Normalize the columns of the matrix to have a unit norm
-% Write your code here... A_normalized = ????;
 A_normalized = A./(ones(n,1)*sqrt(sum(A.^2)));
 
 
@@ -72,49 +64,38 @@ for s = 1:s_max
         x = zeros(m,1);
         
         % TODO: Draw at random a true_supp vector
-        % Write your code here... true_supp = ????;
         true_supp = randperm(m, s)';
         
         % TODO: Draw at random the coefficients of x in true_supp locations
-        % Write your code here... x = ????;
         x(true_supp) = ((max_coeff_val-min_coeff_val)*rand(s,1)+min_coeff_val).*sign(randn(s,1));        
         
         % TODO: Create the signal b
-        % Write your code here... b = ????;
         b = A_normalized*x;
         
         % TODO: Run OMP
-        % Write your code here... x_omp = omp(????, ????, ????);
         x_omp = omp(A_normalized, b, s);
                 
         % TODO: Compute the relative L2 error
-        % Write your code here... L2_error(s,experiment,1) = ????;
         L2_error(s, experiment, 1) = norm(x_omp-x)^2/norm(x)^2;
         
         % TODO: Get the indices of the estimated support
-        % Write your code here... estimated_supp = ????;
         estimated_supp = find(x_omp~=0);
         
         % TODO: Compute the support recovery score
-        % Write your code here... support_error(s,experiment,1) = ????;
         support_error(s, experiment, 1) = 1 - length(intersect(estimated_supp, true_supp))/max(length(estimated_supp), length(true_supp));
         
         % TODO: Run BP
-        % Write your code here... x_lp = lp(????, ????, ????);
         x_lp = lp(A_normalized, b, tol_lp);
         x_lp(abs(x_lp)<=eps_coeff)= 0;
         
         % TODO: Compute the relative L2 error
-        % Write your code here... L2_error(s,experiment,2) = ????;
         L2_error(s,experiment,2) = norm(x_lp-x)^2/norm(x)^2;
         
         % TODO: Get the indices of the estimated support, where the
         % coeffecients are larger (in absolute value) than eps_coeff
-        % Write your code here... estimated_supp = ????;
         estimated_supp = find(x_lp~=0); 
         
         % TODO: Compute the support recovery error
-        % Write your code here... support_error(s,experiment,2) = ????;
         support_error(s, experiment, 2) = 1 - length(intersect(estimated_supp, true_supp))/max(length(estimated_supp), length(true_supp));
         
         fprintf('Running... %0.1f %% \n', ((s-1)*(num_realizations) + experiment)/(s_max*num_realizations)*100) %remove line if error occurs
