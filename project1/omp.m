@@ -8,9 +8,9 @@ function x = omp(A, b, k)
 
 % Initialize the vector x
 x = zeros(size(A,2),1);
+% for larger applications use sparse function from the first place...
 
-% TODO: Implement the OMP algorithm
-% Write you code here... x = ????;
+% Implement the OMP algorithm
 r = b;
 S = [];
 m = size(A,2);
