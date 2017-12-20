@@ -10,8 +10,7 @@ function v = bp_admm(CA, b, lambda)
 tol_admm = 1e-4;
 max_admm_iters = 100;
  
-% TODO: Compute the vector of inner products between the atoms and the signal
-% Write your code here... CAtb = ????;
+% Compute the vector of inner products between the atoms and the signal
 CAtb = CA'*b;
 CAtb = sparse(CAtb);
 
@@ -29,47 +28,40 @@ CAtb = sparse(CAtb);
 % (and so as L and U). Therefore, in order to reduce computations,
 % we compute its decomposition once.
 
-% TODO: Compute the Cholesky factorization of M = CA'*CA + I for fast computation 
+% Compute the Cholesky factorization of M = CA'*CA + I for fast computation 
 % of the x-update. Use Matlab's chol function and produce a lower triangular
 % matrix L, satisfying the equation M = L*L'
-% Write your code here... L = chol( ????, ???? );
 L = chol(CA'*CA + eye(size(CA'*CA,1)), 'lower');
  
 % Force Matlab to recognize the upper / lower triangular structure
 L = sparse(L);
 U = sparse(L');
  
-% TODO: Initialize v
-% Write your code here... v = ????;
+% Initialize v
 v = zeros(size(CA,2),1);
 v = sparse(v);
 
-% TODO: Initialize u, the dual variable of ADMM
-% Write your code here... u = ????;
+% Initialize u, the dual variable of ADMM
 u = zeros(size(CA,2),1);
 u = sparse(u); 
 
-% TODO: Initialize the previous estimate of v, used for convergence test
-% Write your code here... v_prev = ????;
+% Initialize the previous estimate of v, used for convergence test
 v_prev = v;
  
 % main loop
 for i = 1:max_admm_iters
  
-    % TODO: x-update via Cholesky factorization. Solve the linear system
+    % x-update via Cholesky factorization. Solve the linear system
     % (CA'*CA + I)x = (CAtb + v - u)
-    % Write your code here... x = ????    
     x = U\(L\(CAtb + v - u));
 
-    % TODO: v-update via soft thresholding
-    % Write your code here... v = ????;
+    % v-update via soft thresholding
     v = x + u;
     v(v<lambda&v>-lambda) = 0;
     v(v>=lambda) = v(v>=lambda)-lambda;
     v(v<=-lambda) = v(v<=-lambda)+lambda;
 
-    % TODO: u-update according to the ADMM formula
-    % Write your code here... u = ????;
+    % u-update according to the ADMM formula
     u = u + x - v;
     
     % Check if converged   
@@ -77,8 +69,7 @@ for i = 1:max_admm_iters
          break;
     end
     
-    % TODO: Save the previous estimate in v_prev
-    % Write your code here... v_prev = ????;
+    % Save the previous estimate in v_prev
     v_prev = v;
  
 end
