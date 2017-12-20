@@ -3,6 +3,8 @@
  
 %% Parameters
 
+addpath(genpath('./'));
+
 % Set the length of the signal
 n = 50;
 
