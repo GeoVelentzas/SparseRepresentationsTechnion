@@ -11,16 +11,13 @@ function [A_eff_normalized, atoms_norm] = compute_effective_dictionary(C, A)
 %  atoms_norm - A vector of length m, containing the norm of each sampled atom
  
  
-% TODO: Compute the subsampled dictionary
-% Write your code here... A_eff = ????;
+% Compute the subsampled dictionary
 A_eff = C*A;
  
-% TODO: Compute the norm of each atom
-% Write your code here...  atoms_norm = ????;
+% Compute the norm of each atom
 atoms_norm = sqrt(sum(A_eff.^2,1));
  
-% TODO: Normalize the columns of A_eff, avoid division by zero
-% Write your code here...  A_eff_normalized = ????;
+% Normalize the columns of A_eff, avoid division by zero
 atoms_norm(atoms_norm == 0) = 1e-5;
 A_eff_normalized = A_eff./(ones(size(A_eff,1),1)*atoms_norm);
 
