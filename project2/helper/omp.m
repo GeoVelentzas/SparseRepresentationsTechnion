@@ -9,8 +9,7 @@ function x = omp(CA, b, k)
 % Initialize the vector x
 x = zeros(size(CA,2),1);
 
-% TODO: Implement the OMP algorithm
-% Write your code here... x = ????;
+% Implement the OMP algorithm
 r = b;
 S = [];
 m = size(CA,2);
