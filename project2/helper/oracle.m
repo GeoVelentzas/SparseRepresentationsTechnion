@@ -10,8 +10,7 @@ function x = oracle(CA, b, s)
 % Initialize the vector x
 x = zeros(size(CA,2),1);
 
-% TODO: Implement the Oracle estimator
-% Write your code here... x = ????;
+% Implement the Oracle estimator
 CAs = CA(:,s);
 xs = (CAs'*CAs)\CAs'*b;
 x(s) = xs;
